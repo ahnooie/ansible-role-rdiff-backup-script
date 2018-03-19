@@ -24,16 +24,20 @@ Example Playbook
 
 ### Playbook
 
+```
 - hosts: servers
   roles:
-     - { role: /home/ben/ansible-roles/rdiff-backup-script }
+    - { role: ahnooie.rdiff-backup-script }
+```
 
 ### Inventory File
 
+```
 [servers]
 servera.example.com rdiff_backup_server=backupserver.example.com state=present
 serverb.example.com rdiff_backup_server=backupserver.example.com state=present
 serverc.example.com rdiff_backup_server=backupserver.example.com state=present
+```
 
 License
 -------

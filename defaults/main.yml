@@ -2,4 +2,4 @@
 # defaults file for rdiff-backup-script
 rdiff_backup_command: rdiff-backup --print-statistics --exclude /tmp'*' --exclude /var/tmp/'*' --exclude /mnt --exclude /proc --exclude /sys --exclude /var/lib/lxcfs root@$i::/ /opt/rdiff-backups/backups/$i/
 rdiff_prune_command: rdiff-backup --remove-older-than 1Y /opt/rdiff-backups/backups/$i/
-
+state: present

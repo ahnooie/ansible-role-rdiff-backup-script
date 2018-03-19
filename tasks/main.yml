@@ -39,7 +39,44 @@
   package:
     name: rdiff-backup
     state: present
+  run_once: true
   delegate_to: "{{ rdiff_backup_server }}"
   become: true
+
+- name: Generate SSH key on server
+  user:
+    name: root
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Copy ssh key to Ansible inventory host
+  fetch:
+    src: /root/.ssh/id_rsa.pub
+    dest: /tmp/temp_id_rsa.pub
+    flat: yes
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Add authorized_key to client
+  authorized_key:
+    user: root
+    state: "{{ state }}"
+    key: "{{ lookup('file', '/tmp/temp_id_rsa.pub') }}"
+  become: true
+
+- name: Scan ssh-key from client and add to backup server's known hosts
+  known_hosts:
+    name: "{{ item }}"
+    key: "{{ lookup('pipe', 'ssh-keyscan {{ item }},`dig +short {{ item }}`') }}"
+  with_items: "{{ inventory_hostname }}"
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+
+
 
 

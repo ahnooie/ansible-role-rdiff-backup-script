@@ -10,6 +10,15 @@
   delegate_to: "{{ rdiff_backup_server }}"
   become: true
 
+- name: Create rdiff-backups/backups folder
+  file:
+    path: /opt/rdiff-backups/backups
+    state: directory
+    mode: 0755
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
 - name: Create backup script from template
   template:
     src: backups.sh.j2

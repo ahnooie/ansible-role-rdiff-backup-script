@@ -49,4 +49,4 @@ MIT
 Author Information
 ------------------
 
-Created by [Benjamin Bryan](http://b3n.org)
+Created by Benjamin Bryan

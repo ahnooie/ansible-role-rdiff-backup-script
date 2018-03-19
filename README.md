@@ -12,7 +12,7 @@ Role Variables
 --------------
 
 rdiff_backup_server: backupserver.example.com (required)
-state: present or absent (required)
+state: present (default) or absent
 rdiff_backup_command: (optional, overrides default command)
 rdiff_prune_command: (optional, overrides default command)
 

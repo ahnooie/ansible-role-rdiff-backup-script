@@ -85,7 +85,12 @@
   delegate_to: "{{ rdiff_backup_server }}"
   become: true
 
-
+- name: Create cron job on backup server
+  cron:
+    name: "rdiff-backup-script"
+    minute: 43
+    hour: 1
+    job: /var/backups/linux/backups.sh >> /var/log/rdiff-backups.log 2>&1
 
 
 

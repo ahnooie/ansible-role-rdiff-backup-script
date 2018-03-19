@@ -11,8 +11,10 @@ rdiff-backup is included in the Ubuntu, Debian, and Fedora repos but CentOS 6 an
 Role Variables
 --------------
 
-rdiff_backup_server: backupserver.example.com
-state: present or absent
+rdiff_backup_server: backupserver.example.com (required)
+state: present or absent (required)
+rdiff_backup_command: (optional, overrides default command)
+rdiff_prune_command: (optional, overrides default command)
 
 Dependencies
 ------------

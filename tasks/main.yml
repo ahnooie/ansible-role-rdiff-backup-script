@@ -19,6 +19,27 @@
   delegate_to: "{{ rdiff_backup_server }}"
   become: true
 
+- name: Add server to backup list
+  lineinfile:
+    path: /opt/rdiff-backups/serverlist
+    line: "{{ inventory_hostname }}"
+    create: yes
+    mode: 0644
+    state: "{{ state }}"
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
 
+- name: Install rdiff-backup on client
+  package:
+    name: rdiff-backup
+    state: present
+  become: true
+
+- name: Install rdiff-backup on server
+  package:
+    name: rdiff-backup
+    state: present
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
 
 

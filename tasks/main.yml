@@ -88,8 +88,8 @@
 - name: Create cron job on backup server
   cron:
     name: "rdiff-backup-script"
-    minute: 43
-    hour: 1
+    minute: "{{ rdiff_cron_minute }}"
+    hour: "{{ rdiff_cron_hour }}"
     job: /opt/rdiff-backups/backups.sh >> /var/log/rdiff-backups.log 2>&1
 
 

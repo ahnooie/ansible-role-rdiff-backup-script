@@ -13,7 +13,7 @@
 echo "Start backups"
 date
 
-for i in `cat /opt/rdiff-backups/serverlist`;
+for i in `cat {{ rdiff_backup_location }}/serverlist`;
 do
    {{ rdiff_backup_command }}
    {{ rdiff_prune_command }}

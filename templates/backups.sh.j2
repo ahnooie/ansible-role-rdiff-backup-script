@@ -1,0 +1,23 @@
+#!/bin/bash
+# Backup Linux Servers Script
+#
+# Reads servers list and runs rdiff-backup for each server.
+# Removes backups after 1-year old
+#
+# This script should be called by Cron hourly.
+#
+# Requirements:
+# rdiff-backup must be installed on client and server
+# ssh key authentication must be setup for root on clients
+
+echo "Start backups"
+date
+
+for i in `cat /opt/rdiff-backups/serverlist`;
+do
+   {{ rdiff_backup_command }}
+   {{ rdiff_prune_command }}
+done
+
+date
+echo "End backups"

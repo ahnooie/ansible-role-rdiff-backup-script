@@ -1,2 +1,96 @@
 ---
 # tasks file for rdiff-backup-script
+
+- name: Create rdiff-backups folder
+  file:
+    path: /opt/rdiff-backups
+    state: directory
+    mode: 0755
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Create rdiff-backups/backups folder
+  file:
+    path: /opt/rdiff-backups/backups
+    state: directory
+    mode: 0755
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Create backup script from template
+  template:
+    src: backups.sh.j2
+    dest: /opt/rdiff-backups/backups.sh
+    mode: 0755
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Add server to backup list
+  lineinfile:
+    path: /opt/rdiff-backups/serverlist
+    line: "{{ inventory_hostname }}"
+    create: yes
+    mode: 0644
+    state: "{{ state }}"
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Install rdiff-backup on client
+  package:
+    name: rdiff-backup
+    state: present
+  become: true
+
+- name: Install rdiff-backup on server
+  package:
+    name: rdiff-backup
+    state: present
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Generate SSH key on server
+  user:
+    name: root
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Copy ssh key to Ansible inventory host
+  fetch:
+    src: /root/.ssh/id_rsa.pub
+    dest: /tmp/temp_id_rsa.pub
+    flat: yes
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Add authorized_key to client
+  authorized_key:
+    user: root
+    state: "{{ state }}"
+    key: "{{ lookup('file', '/tmp/temp_id_rsa.pub') }}"
+  become: true
+
+- name: Scan ssh-key from client and add to backup server's known hosts
+  known_hosts:
+    name: "{{ item }}"
+    key: "{{ lookup('pipe', 'ssh-keyscan {{ item }},`dig +short {{ item }}`') }}"
+  with_items: "{{ inventory_hostname }}"
+  delegate_to: "{{ rdiff_backup_server }}"
+  become: true
+
+- name: Create cron job on backup server
+  cron:
+    name: "rdiff-backup-script"
+    minute: "{{ rdiff_cron_minute }}"
+    hour: "{{ rdiff_cron_hour }}"
+    job: /opt/rdiff-backups/backups.sh >> /var/log/rdiff-backups.log 2>&1
+
+
+

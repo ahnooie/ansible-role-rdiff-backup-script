@@ -21,6 +21,7 @@ rdiff_backup_command: (optional, overrides default command)
 rdiff_prune_command: (optional, overrides default command)
 rdiff_cron_minute: (defaults to 43)
 rdiff_cron_hour: (defaults to 1)
+rdiff_backup_location: (defaults to /opt/rdiff-backups)
 
 Dependencies
 ------------

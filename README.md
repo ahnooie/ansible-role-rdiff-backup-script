@@ -1,12 +1,14 @@
 Rdiff-Backup Script Ansible Role
 =========
 
-Ansible Role configures an rdiff-backup script and list of servesr to backup up from ansible inventory.
+Ansible Role automates backups by configuring an rdiff-backup script and list of servers to backup up from ansible inventory.  It will install rdiff-backup on both the clients and server.  On the server it creates a script and cron job to pull backups from clients periodically using rdiff-backup and ssh.  It will also generate ssh keys on the server and add those to the client's authorized_keys file for passwordless ssh authentication.  As servers are added and removed (marked present or absent) in ansible the backup list is automatically updated.
 
 Requirements
 ------------
 
-rdiff-backup is included in the Ubuntu, Debian, and Fedora repos but CentOS 6 and 7 requires EPEL.
+This role should work on any popular Linux distribution for the client and backup server as long as rdiff-backup.
+
+rdiff-backup must be available in the repos.  It is included in later versions of Ubuntu, Debian, and Fedora.  For RedHat or CentOS 6 and 7 you'll need EPEL repos enabled.
 
 Role Variables
 --------------
@@ -39,16 +41,16 @@ Example Playbook
 ```
 - hosts: servers
   roles:
-    - { role: ahnooie.rdiff-backup-script }
+    - { role: ahnooie.rdiff-backup-script, rdiff_backup_server: backupserver.example.com }
 ```
 
 ### Inventory File
 
 ```
 [servers]
-servera.example.com rdiff_backup_server=backupserver.example.com state=present
-serverb.example.com rdiff_backup_server=backupserver.example.com state=present
-serverc.example.com rdiff_backup_server=backupserver.example.com state=present
+servera.example.com
+serverb.example.com
+serverc.example.com
 ```
 
 License

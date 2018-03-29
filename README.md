@@ -6,9 +6,9 @@ Ansible Role automates backups by configuring an rdiff-backup script and list of
 Requirements
 ------------
 
-This role should work on any popular Linux distribution for the client and backup server as long as rdiff-backup.
+This role should work on any popular Linux distribution for the client and backup server as long as rdiff-backup is available in the package repository.
 
-rdiff-backup must be available in the repos.  It is included in later versions of Ubuntu, Debian, and Fedora.  For RedHat or CentOS 6 and 7 you'll need EPEL repos enabled.
+rdiff-backup is included in recent versions of Ubuntu, Debian, and Fedora.  For RedHat or CentOS 6 and 7 you'll need EPEL repos enabled.
 
 Role Variables
 --------------

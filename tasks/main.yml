@@ -91,6 +91,8 @@
     minute: "{{ rdiff_cron_minute }}"
     hour: "{{ rdiff_cron_hour }}"
     job: "{{ rdiff_backup_location }}/backups.sh >> /var/log/rdiff-backups.log 2>&1"
+  run_once: true
+  delegate_to: "{{ rdiff_backup_server }}"
 
 
 

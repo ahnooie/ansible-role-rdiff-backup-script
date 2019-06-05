@@ -4,5 +4,5 @@ rdiff_backup_location: /opt/rdiff-backups
 rdiff_backup_command: rdiff-backup --print-statistics --exclude /tmp'*' --exclude /var/tmp/'*' --exclude /mnt --exclude /proc --exclude /sys --exclude /var/lib/lxcfs root@$i::/ {{  rdiff_backup_location  }}/backups/$i/
 rdiff_prune_command: rdiff-backup --remove-older-than 1Y {{  rdiff_backup_location  }}/backups/$i/
 rdiff_cron_minute: "43"
-rdiff_cron_hour: "1
+rdiff_cron_hour: "1"
 state: present
